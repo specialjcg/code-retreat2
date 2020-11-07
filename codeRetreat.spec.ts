@@ -1,18 +1,32 @@
-class CellsLive {
-    next(listCellsNeighbours: DeadCell[]){
+interface Cells{
+    deadcells:DeadCell,
+    cellsLive:CellsLive
+
+
+}
+
+
+class CellsLive implements Cells {
+    next(listCellsNeighbours: DeadCell[]):Cells{
         const numberOfLivingCells=listCellsNeighbours.filter(cell=>cell instanceof CellsLive ).length;
         if (numberOfLivingCells===2||numberOfLivingCells===3) return new CellsLive();
         return new DeadCell()
 
     }
+
+    cellsLive: CellsLive;
+    deadcells: DeadCell;
 }
 
-class DeadCell {
-    next(listCellsNeighbours: CellsLive[]){
+class DeadCell implements Cells {
+    next(listCellsNeighbours: CellsLive[]):Cells{
         const numberOfLivingCells=listCellsNeighbours.filter(cell=>cell instanceof CellsLive ).length;
         if (numberOfLivingCells===3) return new CellsLive();
         return new DeadCell();
     }
+
+    cellsLive: CellsLive;
+    deadcells: DeadCell;
 }
 
 describe('test jeu de la vie', function () {
